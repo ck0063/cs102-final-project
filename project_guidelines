@@ -1,0 +1,30 @@
+Softwrapping text because I hate horizontal scrolling
+
+
+/*
+THINGS TO CONSIDER
+-all user input must be sanatized and validated.
+	-this HAS to happen at every single instance of scanf'ing data into the program
+		-should probably make a userInput() function to handle this every time
+
+REQUIREMENTS BROKEN DOWN
+-Start menu to begin transaction // this should probably be a function
+	-Print statement for grocery kiosk: "Welcome to the CS102 Grocery Store Kiosk! Input the number of the task you wish to do. Make your selection now!
+	1. Start checkout 2. Look up item" // printf
+	-Get user input, must be sanatized // userInput()
+	-Interpret user input // if comparison
+		-START CHECKOUT PATH
+			-Checkout menu // probably also a function. same as above, printf and userInput()
+				-Add item // userInput() an item id
+					-check item against items array // for loop should do fine. for(i = 0; itemID != array[i] && i < arraySize; i++){} something like that. how do you break the value out tho
+						-if no match or bad input, tell user and return to checkout menu // printf and recall checkoutMenu()? not really sure, seems like that could go poorly
+					-ask how many //printf and userInput()
+						-add user-specified amount of item to receipt array // again, for loops are our friends. for(i = 0; i < userInput; i++)
+				-Remove item
+					-get user input for which item  // userInput() item ID
+						-check receipt array // for(i = 0; itemID != array[i] && i < arraySize; i++)
+				-Continue to payment
+				-quit (returns to start menu)
+		-ITEM LOOKUP PATH
+
+*/

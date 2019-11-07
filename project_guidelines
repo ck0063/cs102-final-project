@@ -1,11 +1,10 @@
-Softwrapping text because I hate horizontal scrolling
-
-
 /*
 THINGS TO CONSIDER
 -all user input must be sanatized and validated.
 	-this HAS to happen at every single instance of scanf'ing data into the program
-		-should probably make a userInput() function to handle this every time
+	-should probably make a userInput() function to handle this every time
+	-something else to think about, we may need two separate input functions for different data types
+	-we really should only be accepting strings during the ITEM LOOKUP PATH described below, so that might not warrant its own function. we can decide later. all other input should be ints
 
 REQUIREMENTS BROKEN DOWN
 -Start menu to begin transaction // this should probably be a function
@@ -13,18 +12,52 @@ REQUIREMENTS BROKEN DOWN
 	1. Start checkout 2. Look up item" // printf
 	-Get user input, must be sanatized // userInput()
 	-Interpret user input // if comparison
-		-START CHECKOUT PATH
+		-if 1, START CHECKOUT PATH
 			-Checkout menu // probably also a function. same as above, printf and userInput()
 				-Add item // userInput() an item id
-					-check item against items array // for loop should do fine. for(i = 0; itemID != array[i] && i < arraySize; i++){} something like that. how do you break the value out tho
+					-check item against items array // for loop should do fine. for(i = 0; itemID != array[i] && i < arraySize; i++){if(itemID == array[i]){cart[] += array[i]}}; something like that.
 						-if no match or bad input, tell user and return to checkout menu // printf and recall checkoutMenu()? not really sure, seems like that could go poorly
 					-ask how many //printf and userInput()
-						-add user-specified amount of item to receipt array // again, for loops are our friends. for(i = 0; i < userInput; i++)
+						-add user-specified amount of item to cart array // again, for loops are our friends. for(i = 0; i < userInput; i++)
+				
 				-Remove item
 					-get user input for which item  // userInput() item ID
-						-check receipt array // for(i = 0; itemID != array[i] && i < arraySize; i++)
+					-check cart array // for(i = 0; itemID != array[i] && i < arraySize; i++)
+						-handle bad input the same
+					-traverse cart array and clear item
+				
 				-Continue to payment
+					-print statement "cash or card" //printf and userInput()
+					-if 1, CASH PATH
+						-grab input as float (%.2f), probably doing this locally instead of userInput()
+						-we can either calculate and save the amount of change during this part or we can do it at the end when generating the user's receipt
+						-make sure amount is >= total cost. not sure how to do this if we dont track total cost before printing receipt
+						-print receipt
+						
+					-if 2, CARD PATH (this is the part where i started to consider playing the 12 gauge flute)
+						-grab input card number // userInput with additional checks? must be 16 digit int. long int required? idk.
+						-check credit card array
+							-bad input = print statement and return to payment menu
+						-if good, transaction is paid, print receipt
+						
+					-PRINTING RECEIPT //im thinking this should be a function
+						-pass in cart array (im assuming we will learn about and be allowed to use multidimensional arrays by the time this is relevant)
+						-simple math to calculate total based on item prices and # of items
+						-more simple math to calculate tax
+						-print to screen each item, how many bought, cost of item, subtotal, tax, final total, change due if paid in cash, and XXXXXXXXXXXX1234 if paid with card
+							-also do this every time an item is removed or added
+						-print to file also at the very end
+						
+					-finally, clear screen and goto start menu
+				
 				-quit (returns to start menu)
-		-ITEM LOOKUP PATH
+					-honestly not sure how to handle this, my brain is kinda melting at the moment
+		
+		-if 2, ITEM LOOKUP PATH
+			-user input, except it's a string this time. should probably be case insensitive
+			-traverse item array, return ID and cost if it exists, then return to start menu
+			-if input bad, print an error (Sorry, cant find that item) and return to start menu
+
+ok, i think its finally over. we should expect to continually revise this document and update somehow to show what work is completed 
 
 */

@@ -6,20 +6,49 @@
 
 #define SIZE 1000
 
-char userInput();
+struct item{
+    char name[100];
+    int quantity, id;
+    float price;
+};
+
+char singleUserInput();
+void startMenu();
 void checkoutMenu();
 
 int main(){
+    printf("Welcome to the CS102 Grocery Store Kiosk! Input the number of the task you wish to do. Make your selection now!\n");
+    startMenu();
+
+    return 0;
+}
+
+char singleUserInput(){ //taking input as a string literal prevents most bad-ness.
+    char term[SIZE];
+    int result;
+
+    result = scanf(" %s", term);
+
+    if (strlen(term) > 1){ //if user inputs more than one character, just return something that will trigger the function recall
+        if (result == EOF){ //this is the only method i could find to save our souls from someone inputting the EOF character. we just have to say bye-bye and shut it all down.
+            exit(0);
+        }
+        term[0] = '\0';
+    }
+    return term[0];
+}
+
+void startMenu(){
     char input;
     int flag = 0;
 
-    printf("Welcome to the CS102 Grocery Store Kiosk! Input the number of the task you wish to do. Make your selection now!\n\n1. Start checkout\n2. Look up item\n\n");
+    printf("\n1. Start checkout\n2. Look up item\n\n");
     do{
-        input = userInput();
+        input = singleUserInput();
         switch(input){
             case '1':
                 flag = 1;
-                //checkoutMenu();
+                checkoutMenu();
                 break;
 
             case '2':
@@ -31,21 +60,36 @@ int main(){
                 printf("That isn't valid input. Please try again: ");
         }
     }while(flag != 1);
-
-	return 0;
 }
 
-char userInput(){ //taking input as a string literal prevents most bad-ness.
-    char term[SIZE];
-    int result;
+void checkoutMenu(){
+    char input;
+    int flag = 0;
+    printf("\n-----Checkout menu-----\n\nInput the number of the task you wish to do.\n\n1. Add item\n2. Remove item\n3. Continue to payment\n4. Return to start menu\n\n");
+    do{
+        input = singleUserInput();
+        switch(input){
+            case '1': //add item
+                flag = 1;
 
-    result = scanf(" %s", term);
-    
-    if (strlen(term) > 1){ //if user inputs more than one character, just return something that will trigger the function recall
-        if (result == EOF){ //this is the only method i could find to save our souls from someone inputting the EOF character. we just have to say bye-bye and shut it all down.
-            exit(0);
+                break;
+
+            case '2': //remove item
+                flag = 1;
+
+                break;
+
+            case '3': //payment
+                flag = 1;
+
+                break;
+            case '4': //return to start
+                flag = 1;
+                startMenu();
+                break;
+
+            default:
+                printf("That isn't valid input. Please try again: ");
         }
-        term[0] = '\0';
-    }
-    return term[0];
+    }while(flag != 1);
 }

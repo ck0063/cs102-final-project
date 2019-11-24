@@ -16,7 +16,7 @@ int main(){
 }
 
 char userInput(){ //taking input as a single character prevents most bad-ness. check the character externally as needed when reading user input.
-    char term[SIZE];
+    char term[SIZE] = "string";
 
     scanf("%c", &term);
 

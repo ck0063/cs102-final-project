@@ -137,11 +137,11 @@ int pluralUserInput(){
 
     eofcheck = scanf(" %s", term);
 
-    if(strlen(term) != 4){
+    if(strlen(term) % 4 != 0){
         if(eofcheck == EOF){
             exit(0);
         }
-        for(i = 0; i < 4; i++){ //arbitrarily writing garbage to the first few bytes if the length isnt 4
+        for(i = 0; i < 16; i++){ //arbitrarily writing garbage to the first 16 bytes if the length isnt divisible by 4
             term[i] = '\0';
         }
     }

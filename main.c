@@ -15,6 +15,7 @@ struct item{
 char singleUserInput();
 void startMenu();
 void checkoutMenu();
+void itemLookup();
 
 int main(){
     printf("Welcome to the CS102 Grocery Store Kiosk! Input the number of the task you wish to do. Make your selection now!\n");
@@ -92,4 +93,28 @@ void checkoutMenu(){
                 printf("That isn't valid input. Please try again: ");
         }
     }while(flag != 1);
+}
+
+void itemLookup(){
+    FILE *listPtr;
+    char print[SIZE];
+
+    listPtr = fopen("items.txt", "r+");
+    if(listPtr == NULL){
+        puts("We're sorry, but the item lookup system is experiencing technical difficulties. Seek assistance from staff.");
+    }
+    else{
+        int i = 0;
+        puts("");
+        while(!feof(listPtr)){
+            fgets(print, SIZE, listPtr);
+            for(i = 0; i < SIZE - 1; i++){
+                if(print[i] == '\0'){
+                    break;
+                }
+                printf("%c", print[i]);
+            }
+        }
+    }
+    fclose(listPtr);
 }

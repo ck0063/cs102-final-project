@@ -12,12 +12,12 @@ struct item{ //honestly not sure what this is gonna get used for. seemed like a 
     float price;
 };
 
+char singleUserInput();
+int pluralUserInput();
 void startMenu();
 void checkoutMenu();
 void itemLookup();
 void addItem(int);
-char singleUserInput();
-int pluralUserInput();
 
 int main(){
     printf("Welcome to the CS102 Grocery Store Kiosk!\n");
@@ -93,6 +93,7 @@ void itemLookup(){
     else{
         int i;
         puts("");
+        printf("ID | ITEM | PRICE\n----------------\n");
         while(!feof(listPtr)){ //until end of file,
             fgets(print, SIZE, listPtr); //read in all data up to SIZE bytes to the print array,
             for(i = 0; i < SIZE - 1; i++){ //and printf the print array.
@@ -104,6 +105,7 @@ void itemLookup(){
         }
     }
     fclose(listPtr);
+    startMenu();
 }
 
 void addItem(int input){
@@ -111,9 +113,39 @@ void addItem(int input){
         printf("That item ID could not be found. Please try again: ");
         input = pluralUserInput();
     }
+    FILE *listPtr;
+    char print[SIZE];
+    int test;
 
-    //need file format to continue
+    listPtr = fopen("items.txt", "r+"); //arbitrary filename for personal testing
+    if(listPtr == NULL){ //check file open success
+        puts("We're sorry, but the checkout system is experiencing technical difficulties. Seek assistance from staff.");
+    }
+    else{
+        int i;
+        puts("");
+        //while(!feof(listPtr)){ //until end of file,
+            fgets(print, SIZE, listPtr); //read in all data up to SIZE bytes to the print array,
+            for(i = 0; i < SIZE - 1; i++){ //and printf the print array.
+                if(print[i] == ' '){
+                    break;
+                }
 
+
+
+                printf("%c", print[i]);
+//                if(i % 3 == 0){
+//                    puts("");
+//                }
+            }
+            test = atoi(print);
+            if(test == input){
+                puts("horray, it did a thing");
+            }
+        //}
+    }
+
+    fclose(listPtr);
 }
 
 char singleUserInput(){ //taking input as a string literal prevents most bad-ness.
@@ -150,4 +182,28 @@ int pluralUserInput(){
     }
     printf("%d\n", result);
     return result; //returns 0 in case of wrong number of digits OR non-digits. use 0 as function recall flag
+}
+
+void printReceipt(){
+    FILE *listPtr;
+    char print[SIZE];
+
+    listPtr = fopen("items.txt", "r+"); //arbitrary filename for personal testing
+    if(listPtr == NULL){ //check file open success
+        puts("We're sorry, but the item lookup system is experiencing technical difficulties. Seek assistance from staff.");
+    }
+    else{
+        int i;
+        puts("");
+        while(!feof(listPtr)){ //until end of file,
+            fgets(print, SIZE, listPtr); //read in all data up to SIZE bytes to the print array,
+            for(i = 0; i < SIZE - 1; i++){ //and printf the print array.
+                if(print[i] == '\0'){
+                    break;
+                }
+                printf("%c", print[i]);
+            }
+        }
+    }
+    fclose(listPtr);
 }

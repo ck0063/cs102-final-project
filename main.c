@@ -1,5 +1,6 @@
 //Christopher Kegley
 //Dawson Loveless
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -60,8 +61,10 @@ void checkoutMenu(){
         input = singleUserInput();
         switch(input){
             case '1': //add item
+                printf("\nPlease enter an item ID: ");
                 flag = 1;
                 addItem(pluralUserInput());
+
                 break;
 
             case '2': //remove item
@@ -71,43 +74,53 @@ void checkoutMenu(){
 
             case '3': //payment
                 flag = 1;
-		int pay = 0;
-		float cash = 0;	
-		puts("Would you like to pay with (1) Cash or (2) Credit?");
-		scanf("%d", pay);
-		if (pay = 1)
-		{	puts("Please enter the amount of cash you are paying.\n");
-			scanf("%.2f", &cash);
-		}
-		else
-		{
-			FILE *listPtr;
-    			char print[16];
-			puts("Please enter your card number for us to check our members list.\n");
-			listPtr = fopen("members.txt", "r+"); 
-    			if(listPtr == NULL)
-			{ 
-       			 puts("We're sorry, but our member lookup system is experiencing technical difficulties. Please seek assistance from staff.");
-    			}
-    			else
-			{
-        			scanf("%s", &print);
-				strcmp(print, CARDNUMBER);
-				if (print = CARDNUMBER)
-				{
-					puts("Thank you for shopping with us, you have been billed. Please visit again!\n");
-					
-				}
-				else
-				{
-					puts("We're sorry, but the number you entered is not part of our register.\n");
-				}
-				
-			}
-    		fclose(listPtr);
-			
-		}
+                int pay = 0;
+                float cash = 0;
+                puts("Would you like to pay with (1) Cash or (2) Credit?");
+                scanf("%d", &pay);
+                if (pay == 1)
+                {	puts("Please enter the amount of cash you are paying.\n");
+                    scanf("%.2f", &cash);
+                }
+                else
+                {
+                    FILE *listPtr;
+                    char print[16], cast[16];
+                    int CARDNUMBER, i;
+                    puts("Please enter your card number for us to check our members list.\n");
+                    listPtr = fopen("members.txt", "r+");
+                        if(listPtr == NULL)
+                    {
+                         puts("We're sorry, but our member lookup system is experiencing technical difficulties. Please seek assistance from staff.");
+                        }
+                        else
+                    {
+                            scanf("%s", &print);
+                            while(!feof(listPtr)){ //until end of file,
+                                fgets(print, SIZE, listPtr); //read in all data up to SIZE bytes to the print array,
+                                //puts("");
+                                for(i = 0; i < 16; i++){ //and printf the print array.
+                                    if(print[i] == ' '){
+                                        break;
+                                    }
+                                }
+                                memcpy(cast, print, 16);
+                                CARDNUMBER = atoi(cast);
+                                strcmp(print, CARDNUMBER);
+                                if (cast == CARDNUMBER)
+                                {
+                                    puts("Thank you for shopping with us, you have been billed. Please visit again!\n");
 
+                                }
+                            }
+                            if(cast != CARDNUMBER)
+                                {
+                                    puts("We're sorry, but the number you entered is not part of our register.\n");
+                                }
+                        fclose(listPtr);
+
+                    }
+                }
                 break;
             case '4': //return to start
                 flag = 1;
@@ -152,38 +165,40 @@ void addItem(int input){
         input = pluralUserInput();
     }
     FILE *listPtr;
-    char print[SIZE];
-    int test;
+    char print[SIZE], cast[SIZE];
+    struct item item1;
 
     listPtr = fopen("items.txt", "r+"); //arbitrary filename for personal testing
     if(listPtr == NULL){ //check file open success
         puts("We're sorry, but the checkout system is experiencing technical difficulties. Seek assistance from staff.");
     }
     else{
-        int i;
+        int i, id;
         puts("");
-        //while(!feof(listPtr)){ //until end of file,
+        while(!feof(listPtr)){ //until end of file,
             fgets(print, SIZE, listPtr); //read in all data up to SIZE bytes to the print array,
+            //puts("");
             for(i = 0; i < SIZE - 1; i++){ //and printf the print array.
                 if(print[i] == ' '){
                     break;
                 }
-
-
-
-                printf("%c", print[i]);
-//                if(i % 3 == 0){
-//                    puts("");
-//                }
             }
-            test = atoi(print);
-            if(test == input){
-                puts("hooray, it did a thing");
+            memcpy(cast, print, 4);
+            id = atoi(cast);
+            if(id == input){
+                item1.id = id;
+                printf("How many of that item would you like?: ");
+                item1.quantity = singleUserInput() - '0';
+                printf("id is %d, quantity is %d", item1.id, item1.quantity);
+                break;
             }
-        //}
+        }
+        if(id != input){
+            puts("That item can not be found. Returning to checkout menu.");
+        }
+        fclose(listPtr);
+        checkoutMenu();
     }
-
-    fclose(listPtr);
 }
 
 char singleUserInput(){ //taking input as a string literal prevents most bad-ness.
@@ -218,7 +233,7 @@ int pluralUserInput(){
     else{
         result = atoi(term); //function from stdlib to convert string to int
     }
-    printf("%d\n", result);
+    //printf("%d\n", result);
     return result; //returns 0 in case of wrong number of digits OR non-digits. use 0 as function recall flag
 }
 

@@ -1,3 +1,5 @@
+//Christopher Kegley
+//Dawson Loveless
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -69,6 +71,20 @@ void checkoutMenu(){
 
             case '3': //payment
                 flag = 1;
+		int pay = 0;
+		float cash = 0;	
+		puts("Would you like to pay with (1) Cash or (2) Credit?");
+		scanf("%d", pay);
+		if (pay = 1)
+		{	puts("Please enter the amount of cash you are paying.");
+			scanf("%2f", cash);
+		 	cash - total = change
+		 	
+		}
+		else
+		{
+			
+		}
 
                 break;
             case '4': //return to start
@@ -140,7 +156,7 @@ void addItem(int input){
             }
             test = atoi(print);
             if(test == input){
-                puts("horray, it did a thing");
+                puts("hooray, it did a thing");
             }
         //}
     }

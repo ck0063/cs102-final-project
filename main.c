@@ -76,13 +76,35 @@ void checkoutMenu(){
 		puts("Would you like to pay with (1) Cash or (2) Credit?");
 		scanf("%d", pay);
 		if (pay = 1)
-		{	puts("Please enter the amount of cash you are paying.");
-			scanf("%2f", cash);
-		 	cash - total = change
-		 	
+		{	puts("Please enter the amount of cash you are paying.\n");
+			scanf("%.2f", &cash);
 		}
 		else
 		{
+			FILE *listPtr;
+    			char print[16];
+			puts("Please enter your card number for us to check our members list.\n");
+			listPtr = fopen("members.txt", "r+"); 
+    			if(listPtr == NULL)
+			{ 
+       			 puts("We're sorry, but our member lookup system is experiencing technical difficulties. Please seek assistance from staff.");
+    			}
+    			else
+			{
+        			scanf("%s", &print);
+				strcmp(print, CARDNUMBER);
+				if (print = CARDNUMBER)
+				{
+					puts("Thank you for shopping with us, you have been billed. Please visit again!\n");
+					
+				}
+				else
+				{
+					puts("We're sorry, but the number you entered is not part of our register.\n");
+				}
+				
+			}
+    		fclose(listPtr);
 			
 		}
 
